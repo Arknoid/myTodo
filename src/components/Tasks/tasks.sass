@@ -1,0 +1,28 @@
+/* Import */
+@import src/styles/vars
+
+/* Styles */
+.task
+  font-size: 1.2em
+  background-color: $bg-task
+  border: 1px solid $border-task
+  border-radius: 0.4em
+  padding: 1em
+  margin: 0.3em 0
+
+  &-label
+    margin-left: 0.5em
+
+  &--done
+    text-decoration: line-through
+    opacity: 0.5
+
+  &--fav
+    background-color: #FFFDD0
+    border-color: #FFFDD0
+
+  &-trash,
+  &-fav
+    float: right
+    cursor: pointer
+    margin-left: 0.5em
