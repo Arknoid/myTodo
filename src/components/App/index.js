@@ -23,31 +23,10 @@ class App extends React.Component {
    * State
    */
   state = {
-    view: 'login',
     email: '',
     password: '',
     message: false,
-  }
-
-  /**
-   * Lifecycle
-   */
-  // Le composant est construit et rendu
-  componentDidMount() {
-    // Enregistrement de la vue courante dans l'historique
-    this.saveToHistory();
-    // Écoute du popstate
-    window.addEventListener('popstate', (evt) => {
-      console.log(evt.state);
-      // setState avec les données présentent dans l'historique
-      this.setState(evt.state);
-    });
-  }
-
-  saveToHistory = () => {
-    const { view } = this.state;
-    // Ajout à l'historique de changement de vue
-    window.history.pushState({ view }, view);
+    token: localStorage.getItem('token'),
   }
 
   /**
@@ -56,7 +35,6 @@ class App extends React.Component {
   handleLogin = (evt) => {
     evt.preventDefault();
 
-    console.log('handleLogin');
     // décomposer le state
     const { email, password } = this.state;
 
@@ -64,42 +42,28 @@ class App extends React.Component {
       email,
       password,
     })
-      .then(() => {
-        // response.data : prénom de l'utilisateur
-        // Modification du state avec la data
+      .then((res) => {
+        // Ajout du token d'identification
+        localStorage.setItem('token', res.data);
         this.setState({
-          view: 'logged',
-          message: false,
+          token: true,
         });
       })
-      .catch((error) => {
-        console.error(error);
+      .catch(() => {
         this.setState({
           message: {
             type: 'error',
-            content: 'Désolé, connexion impossible',
+            content: 'Identifian ou mot de pass incorect',
           },
         });
       });
   }
 
   handleLogout = () => {
-    console.log('logout');
+    // Suppresion du token d'identification
+    localStorage.removeItem('token');
     this.setState({
-      view: 'login',
-    });
-  }
-
-  changeView = nextView => () => {
-    // Je construis un objet avec les modifs que je souhaite
-    const view = {
-      view: nextView,
-    };
-
-    // Modification du state avec la bonne vue
-    this.setState(view, () => {
-      // Enregistrement de la vue courante dans l'historique
-      this.saveToHistory();
+      token: false,
     });
   }
 
@@ -110,12 +74,23 @@ class App extends React.Component {
     });
   }
 
+  // Décode le token dans le localStorage
+  parseJwt = () => {
+    const tokenFromStorage = localStorage.getItem('token');
+    // console.log('parseJwt tokenFromStorage', tokenFromStorage);
+    if (tokenFromStorage) {
+      const base64Payload = tokenFromStorage.split('.')[1];
+      return JSON.parse(window.atob(base64Payload));
+    }
+    return 'no token to parse';
+  }
+
   /**
    * Rendu
    */
   render() {
     const {
-      view, email, password, message,
+      email, password, message, token,
     } = this.state;
 
     return (
@@ -125,7 +100,7 @@ class App extends React.Component {
             {message.content}
           </div>
         )}
-        {view === 'login' && (
+        {!token && (
           <Login
             onChangeField={this.changeInputValue}
             onChangeView={this.changeView}
@@ -135,7 +110,7 @@ class App extends React.Component {
             onSubmitLogin={this.handleLogin}
           />
         )}
-        {view === 'logged' && (
+        {token && (
           <div>
             <Todo />
             <button className="form-submit form-submit--login" onClick={this.handleLogout}>

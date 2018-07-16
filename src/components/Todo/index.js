@@ -14,8 +14,6 @@ import './app.sass';
 import Form from 'src/components/Form';
 import Counter from 'src/components/Counter';
 import Tasks from 'src/components/Tasks';
-// data
-// import initialTasks from 'src/data/tasks';
 
 /**
  * Code
@@ -38,7 +36,12 @@ class Todo extends React.Component {
    * Actions
    */
   getTaks= () => {
-    axios.get('http://localhost:3000/tasks')
+    axios.get('http://localhost:3000/tasks',
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
       .then((res) => {
         this.setState({
           tasks: res.data,
