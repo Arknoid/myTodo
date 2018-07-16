@@ -12,9 +12,29 @@ app.use((req, res, next) => {
 });
 
 // Get
-app.get('/', (req, res) => {
-  res.send(`
-  `);
+app.get('/tasks', (req, res) => {
+  res.send(
+    [
+      {
+        id: 1,
+        label: 'farine',
+        done: true,
+        fav: false,
+      },
+      {
+        id: 4,
+        label: 'lait',
+        done: false,
+        fav: true,
+      },
+      {
+        id: 6,
+        label: 'sucre',
+        done: false,
+        fav: false,
+      },
+    ],
+  );
 });
 
 // Login

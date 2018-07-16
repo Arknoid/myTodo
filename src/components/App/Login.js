@@ -14,7 +14,6 @@ import Field from 'src/components/Field';
  */
 const Login = ({
   data,
-  onChangeView,
   emailValue,
   passwordValue,
   onChangeField,
@@ -41,24 +40,15 @@ const Login = ({
         name="password"
         onInputChange={onChangeField}
       />
-      <button
-        className="form-submit form-submit--login"
-      >
+      <button className="form-submit form-submit--login">
         {data.submit}
       </button>
     </form>
-    <a
-      className="app-link"
-      onClick={onChangeView('password')}
-    >
-      {data.link}
-    </a>
   </div>
 );
 
 Login.propTypes = {
   data: PropTypes.object.isRequired,
-  onChangeView: PropTypes.func.isRequired,
   emailValue: PropTypes.string.isRequired,
   passwordValue: PropTypes.string.isRequired,
   onChangeField: PropTypes.func.isRequired,

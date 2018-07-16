@@ -2,6 +2,7 @@
  * Import
  */
 import React from 'react';
+import axios from 'axios';
 
 /**
  * Local import
@@ -14,7 +15,7 @@ import Form from 'src/components/Form';
 import Counter from 'src/components/Counter';
 import Tasks from 'src/components/Tasks';
 // data
-import initialTasks from 'src/data/tasks';
+// import initialTasks from 'src/data/tasks';
 
 /**
  * Code
@@ -23,14 +24,28 @@ class Todo extends React.Component {
   /**
    * State
    */
+  constructor() {
+    super();
+    this.getTaks();
+  }
+
   state = {
-    tasks: initialTasks,
+    tasks: [],
     input: '',
   }
 
   /**
    * Actions
    */
+  getTaks= () => {
+    axios.get('http://localhost:3000/tasks')
+      .then((res) => {
+        this.setState({
+          tasks: res.data,
+        });
+      });
+  }
+
   addTask = () => {
     console.log('ajout de tache');
 

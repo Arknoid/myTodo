@@ -14,7 +14,6 @@ import textData from 'src/data/textdata';
 // Components
 import Todo from 'src/components/Todo';
 import Login from './Login';
-import ForgottenPassword from './ForgottenPassword';
 
 /**
  * Code
@@ -27,7 +26,6 @@ class App extends React.Component {
     view: 'login',
     email: '',
     password: '',
-    firstname: '',
     message: false,
   }
 
@@ -66,11 +64,10 @@ class App extends React.Component {
       email,
       password,
     })
-      .then((response) => {
+      .then(() => {
         // response.data : prénom de l'utilisateur
         // Modification du state avec la data
         this.setState({
-          firstname: response.data,
           view: 'logged',
           message: false,
         });
@@ -84,6 +81,13 @@ class App extends React.Component {
           },
         });
       });
+  }
+
+  handleLogout = () => {
+    console.log('logout');
+    this.setState({
+      view: 'login',
+    });
   }
 
   changeView = nextView => () => {
@@ -111,7 +115,7 @@ class App extends React.Component {
    */
   render() {
     const {
-      view, email, password, firstname, message,
+      view, email, password, message,
     } = this.state;
 
     return (
@@ -131,17 +135,15 @@ class App extends React.Component {
             onSubmitLogin={this.handleLogin}
           />
         )}
-        {view === 'password' && (
-          <ForgottenPassword
-            onChangeField={this.changeInputValue}
-            onChangeView={this.changeView}
-            data={textData.password}
-            emailValue={email}
-          />
-        )}
         {view === 'logged' && (
-          <Todo />
+          <div>
+            <Todo />
+            <button className="form-submit form-submit--login" onClick={this.handleLogout}>
+              Deconnection
+            </button>
+          </div>
         )}
+
       </div>
     );
   }
