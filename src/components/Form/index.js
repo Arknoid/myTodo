@@ -59,28 +59,6 @@ class Form extends React.Component {
   }
 }
 
-// Form.propTypes = {
-//   onAddTask: PropTypes.func.isRequired,
-// };
-
-// Version Fonction : C'est valable !
-// const Form = () => {
-//   const handleSubmit = (evt) => {
-//     evt.preventDefault();
-
-//     console.log('submit');
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <input
-//         type="text"
-//         id="todo-input"
-//         placeholder="Ajouter une tâche"
-//       />
-//     </form>
-//   );
-// };
 
 /**
  * Export

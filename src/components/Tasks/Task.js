@@ -17,7 +17,6 @@ import Star from 'react-icons/lib/fa/star';
  * Code
  */
 const Task = ({
-  id,
   label,
   done,
   fav,
@@ -43,23 +42,22 @@ const Task = ({
       <input
         type="checkbox"
         checked={done}
-        onChange={onTaskCheck(id)}
+        onChange={onTaskCheck}
       />
       <span className="task-label">{label}</span>
       <Trash
         className="task-trash"
-        onClick={onTaskDelete(id)}
+        onClick={onTaskDelete}
       />
       <Favorite
         className="task-fav"
-        onClick={onTaskFav(id)}
+        onClick={onTaskFav}
       />
     </li>
   );
 };
 
 Task.propTypes = {
-  id: PropTypes.number.isRequired,
   label: PropTypes.string.isRequired,
   done: PropTypes.bool.isRequired,
   fav: PropTypes.bool.isRequired,

@@ -10,21 +10,17 @@ import PropTypes from 'prop-types';
 // Styles et assets
 import './tasks.sass';
 // Composants
-import Task from './Task';
+import Task from 'src/containers/Tasks/Task';
 
 /**
  * Code
  */
-const Tasks = ({ list, actions }) => (
+const Tasks = ({ list }) => (
   <ul id="tasks">
     {list.map(task => (
       <Task
         key={task.id}
-        // Je vide ici tout le contenu de la tache : task
         {...task}
-        // actions={actions} OU {...actions}
-        // Les 2 approches sont parfaitement valables
-        {...actions}
       />
     ))}
   </ul>
@@ -32,7 +28,6 @@ const Tasks = ({ list, actions }) => (
 
 Tasks.propTypes = {
   list: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-  actions: PropTypes.objectOf(PropTypes.func.isRequired).isRequired,
 };
 /**
  * Export
