@@ -6,17 +6,26 @@ import uuidv4 from 'uuid/v4'; // https://www.npmjs.com/package/uuid
  * Initial State
  */
 const initialState = {
+  tasks: [],
   input: '',
+  passwordInput: '',
+  emailInput: '',
+  message: '',
+  logged: false,
 };
 
 /**
  * Types
  */
 const INPUT_CHANGE = 'INPUT_CHANGE';
+const EMAIL_CHANGE = 'EMAIL_CHANGE';
+const PASSWORD_CHANGE = 'PASSWORD_CHANGE';
 const TASK_ADD = 'TASK_ADD';
 const TASK_DELETE = 'TASK_DELETE';
 const TASK_DONE = 'TASK_DONE';
 const TASK_FAV = 'TASK_FAV';
+const USER_LOGGED = 'USER_LOGGED';
+const USER_DISCONNECT = 'USER_DISCONNECT';
 
 /**
  * Traitements
@@ -39,12 +48,31 @@ const toggleTaskProp = (tasks, id, prop) => tasks.map((task) => {
  */
 const reducer = (state = initialState, action = {}) => {
   switch (action.type) {
+    case USER_LOGGED:
+      return {
+        ...state,
+        logged: true,
+      };
+    case USER_DISCONNECT:
+      return {
+        ...state,
+        logged: false,
+      };
     case INPUT_CHANGE:
       return {
         ...state,
         input: action.input,
       };
-
+    case EMAIL_CHANGE:
+      return {
+        ...state,
+        emailInput: action.input,
+      };
+    case PASSWORD_CHANGE:
+      return {
+        ...state,
+        passwordInput: action.input,
+      };
     case TASK_ADD: {
       // Calcul du prochain id
       // lastId += 1;
@@ -103,6 +131,16 @@ export const changeInput = value => ({
   input: value,
 });
 
+export const changePassword = value => ({
+  type: PASSWORD_CHANGE,
+  input: value,
+});
+
+export const changeEmail = value => ({
+  type: EMAIL_CHANGE,
+  input: value,
+});
+
 export const addTask = () => ({
   type: TASK_ADD,
 });
@@ -120,6 +158,14 @@ export const doneTask = id => ({
 export const favTask = id => ({
   type: TASK_FAV,
   id,
+});
+
+export const logged = () => ({
+  type: USER_LOGGED,
+});
+
+export const disconnect = () => ({
+  type: USER_DISCONNECT,
 });
 
 /**

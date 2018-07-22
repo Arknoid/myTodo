@@ -2,70 +2,35 @@
  * Npm Import
  */
 import React from 'react';
-import axios from 'axios';
-
+import PropTypes from 'prop-types';
 /**
  * Local Import
  */
 // Styles
 import './app.sass';
 // data
-import textData from 'src/data/textdata';
 // Components
 import Todo from 'src/components/Todo';
-import Login from 'src/components/Login';
+import Login from 'src/containers/Login';
 
 /**
  * Code
  */
 class App extends React.Component {
-  /**
-   * State
-   */
+  static propTypes = {
+    message: PropTypes.string.isRequired,
+    logged: PropTypes.bool.isRequired,
+    onDisconnect: PropTypes.func.isRequired,
+  }
 
   /**
    * Actions
    */
-  handleLogin = (evt) => {
-    evt.preventDefault();
-
-    // décomposer le state
-    const { email, password } = this.state;
-
-    axios.post('http://localhost:3000/login', {
-      email,
-      password,
-    })
-      .then((res) => {
-        // Ajout du token d'identification
-        localStorage.setItem('token', res.data);
-        this.setState({
-          token: true,
-        });
-      })
-      .catch(() => {
-        this.setState({
-          message: {
-            type: 'error',
-            content: 'Identifian ou mot de pass incorect',
-          },
-        });
-      });
-  }
-
   handleLogout = () => {
+    const { onDisconnect } = this.props;
     // Suppresion du token d'identification
     localStorage.removeItem('token');
-    this.setState({
-      token: false,
-    });
-  }
-
-  changeInputValue = (field, value) => {
-    // Modification du state
-    this.setState({
-      [field]: value,
-    });
+    onDisconnect();
   }
 
   // Décode le token dans le localStorage
@@ -84,8 +49,8 @@ class App extends React.Component {
    */
   render() {
     const {
-      email, password, message, token,
-    } = this.state;
+      message, logged,
+    } = this.props;
 
     return (
       <div className="app">
@@ -94,17 +59,10 @@ class App extends React.Component {
             {message.content}
           </div>
         )}
-        {!token && (
-          <Login
-            onChangeField={this.changeInputValue}
-            onChangeView={this.changeView}
-            data={textData.login}
-            emailValue={email}
-            passwordValue={password}
-            onSubmitLogin={this.handleLogin}
-          />
+        {!logged && (
+          <Login />
         )}
-        {token && (
+        {logged && (
           <div>
             <Todo />
             <button className="form-submit form-submit--login" onClick={this.handleLogout}>

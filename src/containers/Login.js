@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 /**
  * Local import
  */
-import Form from 'src/components/Form';
+import Login from 'src/components/Login';
 
 // Action Creators
-import { addTask, changeInput } from 'src/store/reducer';
+import { changePassword, changeEmail, logged } from 'src/store/reducer';
 
 /* === State (données) ===
  * - value de l'input
@@ -21,7 +21,8 @@ import { addTask, changeInput } from 'src/store/reducer';
  * Pas de data à transmettre ? const mapStateToProps = null;
  */
 const mapStateToProps = state => ({
-  inputValue: state.input,
+  passwordValue: state.passwordInput,
+  emailValue: state.emailInput,
 });
 
 /* === Actions ===
@@ -35,26 +36,31 @@ const mapStateToProps = state => ({
  * Pas de disptach à transmettre ? const mapDispatchToProps = {};
  */
 const mapDispatchToProps = dispatch => ({
-  onInputChange: (value) => {
+  onLogin: () => {
+    dispatch(logged());
+  },
+  onChangeField: (field, value) => {
     // Je dispatch une action : action INPUT_CHANGE en lui passant la value du champ
     // Action fournie par
     // - changeInput(...) => { type: CHANGE_INPUT, input: ...}
+    if (field === 'password') {
+      dispatch(changePassword(value));
+    }
+    else if (field === 'email') {
+      dispatch(changeEmail(value));
+    }
+  },
 
-    dispatch(changeInput(value));
-  },
-  onAddTask: () => {
-    dispatch(addTask());
-  },
 });
 
 // Container
 // connect(Ce dont j'ai besoin)(Qui en a besoin)
-const FormContainer = connect(
+const LoginContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Form);
+)(Login);
 
 /**
  * Export
  */
-export default FormContainer;
+export default LoginContainer;

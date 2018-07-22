@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 /**
  * Local Import
@@ -12,48 +13,71 @@ import Field from 'src/components/Field';
 /**
  * Code
  */
-const Login = ({
-  data,
-  emailValue,
-  passwordValue,
-  onChangeField,
-  onSubmitLogin,
-}) => (
-  <div id="login">
-    <h1 className="app-title">{data.title}</h1>
-    <div className="app-desc">{data.desc}</div>
-    <form
-      className="form"
-      onSubmit={onSubmitLogin}
-    >
-      <Field
-        value={emailValue}
-        placeholder="Adresse e-mail"
-        type="email"
-        name="email"
-        onInputChange={onChangeField}
-      />
-      <Field
-        value={passwordValue}
-        placeholder="Mot de passe"
-        type="password"
-        name="password"
-        onInputChange={onChangeField}
-      />
-      <button className="form-submit form-submit--login">
-        {data.submit}
-      </button>
-    </form>
-  </div>
-);
+class Login extends React.Component {
+  static propTypes = {
+    emailValue: PropTypes.string.isRequired,
+    passwordValue: PropTypes.string.isRequired,
+    onChangeField: PropTypes.func.isRequired,
+    onLogin: PropTypes.func.isRequired,
+  };
 
-Login.propTypes = {
-  data: PropTypes.object.isRequired,
-  emailValue: PropTypes.string.isRequired,
-  passwordValue: PropTypes.string.isRequired,
-  onChangeField: PropTypes.func.isRequired,
-  onSubmitLogin: PropTypes.func.isRequired,
-};
+  handleChange = (name, value) => {
+    const { onChangeField } = this.props;
+    onChangeField(name, value);
+  }
+
+  handleLogin = (evt) => {
+    evt.preventDefault();
+    const { emailValue, passwordValue, onLogin } = this.props;
+    axios.post('http://localhost:3000/login', {
+      emailValue,
+      passwordValue,
+    })
+      .then((res) => {
+        // Ajout du token d'identification
+        localStorage.setItem('token', res.data);
+        onLogin();
+      })
+      .catch(() => {
+        // this.setState({
+        //   message: {
+        //     type: 'error',
+        //     content: 'Identifian ou mot de pass incorect',
+        //   },
+      });
+  };
+
+  render() {
+    const { emailValue, passwordValue } = this.props;
+    return (
+      <div id="login">
+        <h1 className="app-title">Entrez vos identifians</h1>
+        <form
+          className="form"
+          onSubmit={this.handleLogin}
+        >
+          <Field
+            value={emailValue}
+            placeholder="Adresse e-mail"
+            type="email"
+            name="email"
+            onInputChange={this.handleChange}
+          />
+          <Field
+            value={passwordValue}
+            placeholder="Mot de passe"
+            type="password"
+            name="password"
+            onInputChange={this.handleChange}
+          />
+          <button className="form-submit form-submit--login">
+            Connexion
+          </button>
+        </form>
+      </div>
+    );
+  }
+}
 
 /**
  * Export

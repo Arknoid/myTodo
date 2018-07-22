@@ -49,8 +49,8 @@ app.get('/tasks', (req, res) => {
 // Login
 const fakeUser = { email: 'omalige@gmail.com', password: 'aze' };
 app.post('/login', (req, res) => {
-  const { email, password } = req.body;
-  if (email === fakeUser.email && password === fakeUser.password) {
+  const { emailValue, passwordValue } = req.body;
+  if (emailValue === fakeUser.email && passwordValue === fakeUser.password) {
     const myToken = jwt.sign({ iss: 'myTodo', user: fakeUser.email, role: 'user' }, secret);
     res.json(myToken);
   }
