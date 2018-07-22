@@ -13,7 +13,7 @@ import './app.sass';
 import textData from 'src/data/textdata';
 // Components
 import Todo from 'src/components/Todo';
-import Login from './Login';
+import Login from 'src/components/Login';
 
 /**
  * Code
@@ -22,12 +22,6 @@ class App extends React.Component {
   /**
    * State
    */
-  state = {
-    email: '',
-    password: '',
-    message: false,
-    token: localStorage.getItem('token'),
-  }
 
   /**
    * Actions

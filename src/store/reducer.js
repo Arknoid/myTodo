@@ -1,13 +1,11 @@
 import uuidv4 from 'uuid/v4'; // https://www.npmjs.com/package/uuid
 
 // Import des data
-import initialTasks from 'src/data/tasks';
 
 /**
  * Initial State
  */
 const initialState = {
-  tasks: initialTasks,
   input: '',
 };
 
