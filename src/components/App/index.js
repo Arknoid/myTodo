@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
  */
 // Styles
 import './app.sass';
-// data
+
 // Components
 import Todo from 'src/components/Todo';
 import Login from 'src/containers/Login';
@@ -21,11 +21,20 @@ class App extends React.Component {
     message: PropTypes.string.isRequired,
     logged: PropTypes.bool.isRequired,
     onDisconnect: PropTypes.func.isRequired,
+    userLogged: PropTypes.func.isRequired,
   }
 
+  componentDidMount = () => {
+    // Connection de l'utilisateur si possesion d'un Token
+    const { userLogged } = this.props;
+    if (localStorage.getItem('token') !== null) {
+      userLogged();
+    }
+  }
   /**
    * Actions
    */
+
   handleLogout = () => {
     const { onDisconnect } = this.props;
     // Suppresion du token d'identification

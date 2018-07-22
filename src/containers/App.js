@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import App from 'src/components/App';
 
 // Action Creators
-import { disconnect } from 'src/store/reducer';
+import { disconnect, logged } from 'src/store/reducer';
 // States :
 const mapStateToProps = state => ({
   message: state.message,
@@ -20,6 +20,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onDisconnect: () => {
     dispatch(disconnect());
+  },
+  userLogged: () => {
+    dispatch(logged());
   },
 });
 
