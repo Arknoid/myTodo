@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import App from 'src/components/App';
 
 // Action Creators
-import { disconnect, logged } from 'src/store/reducer';
+import { disconnect, logged, setTasks } from 'src/store/reducer';
 // States :
 const mapStateToProps = state => ({
   message: state.message,
@@ -23,6 +23,9 @@ const mapDispatchToProps = dispatch => ({
   },
   userLogged: () => {
     dispatch(logged());
+  },
+  setUserTasks: (userTasks) => {
+    dispatch(setTasks(userTasks));
   },
 });
 

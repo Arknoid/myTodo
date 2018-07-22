@@ -26,6 +26,7 @@ const TASK_DONE = 'TASK_DONE';
 const TASK_FAV = 'TASK_FAV';
 const USER_LOGGED = 'USER_LOGGED';
 const USER_DISCONNECT = 'USER_DISCONNECT';
+const USER_TASKS = 'USER_TASKS';
 
 /**
  * Traitements
@@ -52,6 +53,12 @@ const reducer = (state = initialState, action = {}) => {
       return {
         ...state,
         logged: true,
+      };
+
+    case USER_TASKS:
+      return {
+        ...state,
+        tasks: action.tasks,
       };
     case USER_DISCONNECT:
       return {
@@ -168,6 +175,11 @@ export const disconnect = () => ({
   type: USER_DISCONNECT,
 });
 
+export const setTasks = tasks => ({
+  type: USER_TASKS,
+  tasks,
+});
+
 /**
  * Selectors
  */
@@ -179,6 +191,7 @@ export const getFilteredTasks = tasks => [
   // fait
   ...tasks.filter(task => task.done),
 ];
+
 
 /**
  * Export

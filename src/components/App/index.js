@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 /**
  * Local Import
  */
@@ -22,6 +23,7 @@ class App extends React.Component {
     logged: PropTypes.bool.isRequired,
     onDisconnect: PropTypes.func.isRequired,
     userLogged: PropTypes.func.isRequired,
+    setUserTasks: PropTypes.func.isRequired,
   }
 
   componentDidMount = () => {
@@ -30,6 +32,27 @@ class App extends React.Component {
     if (localStorage.getItem('token') !== null) {
       userLogged();
     }
+  }
+
+  componentDidUpdate = () => {
+    const { logged } = this.props;
+    // Récuperation des tasks de l'utilisateur depuis le serveur
+    if (logged) {
+      this.getUserTasks();
+    }
+  }
+
+  getUserTasks= () => {
+    const { setUserTasks } = this.props;
+    axios.get('http://localhost:3000/tasks',
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        setUserTasks(res.data);
+      });
   }
   /**
    * Actions
@@ -60,7 +83,6 @@ class App extends React.Component {
     const {
       message, logged,
     } = this.props;
-
     return (
       <div className="app">
         {message && (
@@ -75,7 +97,7 @@ class App extends React.Component {
           <div>
             <Todo />
             <button className="form-submit form-submit--login" onClick={this.handleLogout}>
-              Deconnection
+              Déconnection
             </button>
           </div>
         )}
